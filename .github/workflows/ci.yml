@@ -429,3 +429,28 @@ jobs:
             pip install pytest && \
             pytest && \
             deactivate'
+            
+  test-x86:
+    name: "Test ${{ matrix.pyver }} x86_64"
+    strategy:
+      matrix:
+        pyver: [cp37-cp37m, cp38-cp38, cp39-cp39]
+      fail-fast: false
+    runs-on: ubuntu-latest
+    env:
+      py: /opt/python/${{ matrix.pyver }}/bin/python
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+    - name: Install dependencies
+      run: |
+            docker run --rm -v ${{ github.workspace }}:/ws:rw --workdir=/ws \
+            quay.io/pypa/manylinux2014_x86_64 \
+            bash -exc '${{ env.py }} -m venv .env && \
+            source .env/bin/activate && \
+            yum install -y wget && \
+            wget https://buildbot.panda3d.org/downloads/b518da99a669f044858017f6525a97d9a7ed1d56/panda3d-1.10.12.dev2-${{ matrix.pyver }}-manylinux2014_x86_64.whl && \
+            pip install panda3d-1.10.12.dev2-${{ matrix.pyver }}-manylinux2014_x86_64.whl
+            pip install pytest && \
+            pytest && \
+            deactivate'            
