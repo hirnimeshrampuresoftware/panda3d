@@ -1,4 +1,4 @@
-from panda3d.core import ZipArchive, IStreamWrapper, StringStream, Filename
+from panda3d.core import IStreamWrapper, StringStream, Filename
 from direct.stdpy.file import StreamIOWrapper
 import zipfile
 from io import BytesIO
